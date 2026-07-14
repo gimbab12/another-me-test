@@ -3,8 +3,10 @@ import { motion } from 'motion/react';
 import { RefreshCw, Share2, Award, Sparkles, CheckCircle, Heart } from 'lucide-react';
 import { FEMALE_RESULTS, MALE_RESULTS, Gender, GradeResult } from '../types';
 import { Language, LOCALES, UIStrings } from '../locales';
+import AdFitBanner from './AdFitBanner';
 
 interface ResultViewProps {
+
   gender: Gender;
   photoUrl: string;
   choices: number[];
@@ -239,6 +241,13 @@ export default function ResultView({ gender, photoUrl, choices, onRestart, lang,
               <RefreshCw className="h-3.5 w-3.5 shrink-0" /> {ui.btnRestart}
             </button>
           </div>
+
+          {/* AdFit Web Banner */}
+          <AdFitBanner
+            unitId={(import.meta as any).env.VITE_ADFIT_RESULT_ID || 'PLACEHOLDER'}
+            width="320"
+            height="50"
+          />
         </motion.div>
       </div>
     </div>

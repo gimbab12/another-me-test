@@ -2,12 +2,14 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Heart, Upload, Sparkles, UserCheck } from 'lucide-react';
 import { Language, UIStrings } from '../locales';
+import AdFitBanner from './AdFitBanner';
 
 interface LandingViewProps {
   onStart: () => void;
   lang: Language;
   ui: UIStrings;
 }
+
 
 export default function LandingView({ onStart, lang, ui }: LandingViewProps) {
   return (
@@ -111,6 +113,13 @@ export default function LandingView({ onStart, lang, ui }: LandingViewProps) {
           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-rose-500 to-amber-500 opacity-20 transition-transform duration-500 group-hover:translate-x-0" />
         </button>
       </motion.div>
+
+      {/* AdFit Web Banner */}
+      <AdFitBanner
+        unitId={(import.meta as any).env.VITE_ADFIT_LANDING_ID || 'PLACEHOLDER'}
+        width="320"
+        height="50"
+      />
     </div>
   );
 }
