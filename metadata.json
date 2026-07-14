@@ -1,0 +1,6 @@
+{
+  "name": "또다른 나의 모습 테스트",
+  "description": "사진 업로드와 5가지 간단한 질문을 통해 나의 이성 버전을 포함한 또다른 모습을 알아보는 심박수 고조 페이스 테스트",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
