@@ -1,55 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface AdFitBannerProps {
-  unitId: string;
-  width: string;
-  height: string;
+  unitId?: string;
+  width?: string;
+  height?: string;
 }
 
 export default function AdFitBanner({ unitId, width, height }: AdFitBannerProps) {
-  useEffect(() => {
-    // Only run script on client side and when unitId is provided
-    if (!unitId || unitId === 'PLACEHOLDER') return;
+  // Use user's real unitId as a reliable default fallback if VITE_ADFIT_LANDING_ID or VITE_ADFIT_RESULT_ID is not configured
+  const activeUnitId = (!unitId || unitId === 'PLACEHOLDER') ? 'DAN-fPpKBjqcgAZAFFem' : unitId;
+  const activeWidth = activeUnitId === 'DAN-fPpKBjqcgAZAFFem' ? '250' : (width || '320');
+  const activeHeight = activeUnitId === 'DAN-fPpKBjqcgAZAFFem' ? '250' : (height || '50');
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!activeUnitId) return;
+
+    // Create the AdFit loader script
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
+    script.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
     script.async = true;
-    document.body.appendChild(script);
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.appendChild(script);
+    }
 
     return () => {
-      // Clean up script if component unmounts
-      try {
-        document.body.removeChild(script);
-      } catch (e) {
-        // Ignore if already removed
+      if (currentContainer && script.parentNode === currentContainer) {
+        currentContainer.removeChild(script);
       }
     };
-  }, [unitId]);
-
-  // If unitId is placeholder, show a beautifully styled dummy/preview box for UX
-  if (!unitId || unitId === 'PLACEHOLDER') {
-    return (
-      <div 
-        className="w-full max-w-[320px] mx-auto my-4 p-3 rounded-2xl bg-slate-50 border border-dashed border-slate-200 text-slate-400 text-[10px] font-sans font-medium flex flex-col items-center justify-center gap-1 shrink-0"
-        id="adfit-dummy-placeholder"
-      >
-        <span className="text-[9px] bg-slate-200/60 px-1.5 py-0.5 rounded text-slate-500 font-bold font-mono">ADVERTISING</span>
-        <span>카카오 애드핏 광고 영역 ({width}x{height})</span>
-        <span className="text-[9px] text-slate-400">(Vercel 배포 후 발급받은 광고 단위 ID를 입력하면 활성화됩니다)</span>
-      </div>
-    );
-  }
+  }, [activeUnitId, activeWidth, activeHeight]);
 
   return (
-    <div className="flex justify-center my-4 overflow-hidden max-w-full shrink-0" id={`adfit-container-${unitId}`}>
-      <ins
-        className="kakao_ad_area"
-        style={{ display: 'none' }}
-        data-ad-unit={unitId}
-        data-ad-width={width}
-        data-ad-height={height}
-      />
+    <div className="flex flex-col items-center justify-center my-6 overflow-hidden max-w-full shrink-0" id={`adfit-container-${activeUnitId}`}>
+      {/* Tiny clean visual label for ads */}
+      <span className="text-[8px] bg-slate-100 text-slate-400 px-1.5 py-0.5 rounded font-bold font-mono tracking-wider mb-2">ADVERTISEMENT</span>
+      <div ref={containerRef} className="flex justify-center items-center">
+        <ins
+          className="kakao_ad_area"
+          style={{ display: 'none' }}
+          data-ad-unit={activeUnitId}
+          data-ad-width={activeWidth}
+          data-ad-height={activeHeight}
+        />
+      </div>
     </div>
   );
 }
+
