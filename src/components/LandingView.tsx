@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Heart, Upload, Sparkles, UserCheck } from 'lucide-react';
+import { Heart, Upload, Sparkles, UserCheck, Share2, PlusSquare } from 'lucide-react';
 import { Language, UIStrings } from '../locales';
 import AdFitBanner from './AdFitBanner';
+import { handleMobileShare, handleMobileInstall } from '../utils/mobileActions';
 
 interface LandingViewProps {
   onStart: () => void;
@@ -112,6 +113,35 @@ export default function LandingView({ onStart, lang, ui }: LandingViewProps) {
           </span>
           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-rose-500 to-amber-500 opacity-20 transition-transform duration-500 group-hover:translate-x-0" />
         </button>
+      </motion.div>
+
+      {/* Mobile Quick Action Buttons */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.45, duration: 0.5 }}
+        className="mt-4 w-full px-4 max-w-xs flex flex-col gap-2.5 sm:hidden"
+        id="mobile-quick-actions"
+      >
+        <div className="flex items-center gap-2 w-full">
+          <button
+            onClick={() => handleMobileShare(ui)}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-sm active:scale-95 transition-all"
+            id="mobile-btn-share"
+          >
+            <Share2 className="h-4 w-4 text-slate-500" />
+            <span>{lang === 'ko' ? '링크 공유' : lang === 'en' ? 'Share Link' : lang === 'ja' ? 'シェアする' : '分享链接'}</span>
+          </button>
+          
+          <button
+            onClick={handleMobileInstall}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-sm active:scale-95 transition-all"
+            id="mobile-btn-install"
+          >
+            <PlusSquare className="h-4 w-4 text-rose-500" />
+            <span>{lang === 'ko' ? '홈 화면 추가' : lang === 'en' ? 'Add to Home' : lang === 'ja' ? 'ホームに追加' : '添加到桌面'}</span>
+          </button>
+        </div>
       </motion.div>
 
       {/* AdFit Web Banner */}

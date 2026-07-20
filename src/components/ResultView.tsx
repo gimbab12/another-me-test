@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { RefreshCw, Share2, Award, Sparkles, CheckCircle, Heart } from 'lucide-react';
+import { RefreshCw, Share2, Award, Sparkles, CheckCircle, Heart, PlusSquare } from 'lucide-react';
 import { FEMALE_RESULTS, MALE_RESULTS, Gender, GradeResult } from '../types';
 import { Language, LOCALES, UIStrings } from '../locales';
 import AdFitBanner from './AdFitBanner';
+import { handleMobileShare, handleMobileInstall } from '../utils/mobileActions';
 
 interface ResultViewProps {
 
@@ -67,16 +68,9 @@ export default function ResultView({ gender, photoUrl, choices, onRestart, lang,
     image: baseResult.image // Use actual high-quality JPG asset from base result
   };
 
-  // Helper to handle results sharing copy
+  // Helper to handle results sharing copy and native sheet sharing
   const handleShare = () => {
-    try {
-      // Use clean URL without anchor tags or hashes
-      const shareUrl = window.location.origin + window.location.pathname;
-      navigator.clipboard.writeText(shareUrl);
-      alert(ui.copySuccess);
-    } catch (err) {
-      alert(ui.copyFail);
-    }
+    handleMobileShare(ui);
   };
 
   // Localized gender labels inside parenthesis
@@ -222,6 +216,18 @@ export default function ResultView({ gender, photoUrl, choices, onRestart, lang,
                 {result.mbtiMatch}
               </span>
             </div>
+          </div>
+
+          {/* Mobile Home Screen Install Button */}
+          <div className="block sm:hidden mb-3" id="mobile-result-install-wrapper">
+            <button
+              onClick={handleMobileInstall}
+              className="w-full flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 font-extrabold py-3 px-4 rounded-full text-xs transition-all active:scale-98 border border-rose-100/50 shadow-sm"
+              id="mobile-result-btn-install"
+            >
+              <PlusSquare className="h-4 w-4 text-rose-500 shrink-0" />
+              <span>{lang === 'ko' ? '홈 화면에 앱 추가하기' : lang === 'en' ? 'Add App to Home Screen' : lang === 'ja' ? 'ホームにアプリを追加' : '添加到主屏幕'}</span>
+            </button>
           </div>
 
           {/* Action buttons */}

@@ -11,6 +11,7 @@ import QuizView from './components/QuizView';
 import ScanningView from './components/ScanningView';
 import ResultView from './components/ResultView';
 import InstallPrompt from './components/InstallPrompt';
+import AdFitBanner from './components/AdFitBanner';
 import { Gender } from './types';
 import { Language, LOCALES } from './locales';
 
@@ -199,6 +200,12 @@ export default function App() {
 
       {/* Persistent Floating PWA Helper */}
       <InstallPrompt lang={lang} ui={ui} />
+
+      {/* Persistent Floating Mobile Bottom AdFit Banner */}
+      <AdFitBanner
+        unitId={(import.meta as any).env.VITE_ADFIT_STICKY_ID || 'PLACEHOLDER'}
+        isStickyBottom={true}
+      />
     </div>
   );
 }

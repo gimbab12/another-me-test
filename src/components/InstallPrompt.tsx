@@ -38,10 +38,16 @@ export default function InstallPrompt({ lang, ui }: InstallPromptProps) {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
+      (window as any).deferredPrompt = e;
       setShowFloatingButton(true);
     };
 
+    const handleShowGuide = () => {
+      setShowModal(true);
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('show-pwa-guide', handleShowGuide);
 
     // If on iOS or if browser already supports installation, show button after 3 seconds
     const timer = setTimeout(() => {
@@ -52,6 +58,7 @@ export default function InstallPrompt({ lang, ui }: InstallPromptProps) {
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('show-pwa-guide', handleShowGuide);
       clearTimeout(timer);
     };
   }, [platform]);
