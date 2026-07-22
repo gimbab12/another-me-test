@@ -11,7 +11,7 @@ export default function AdFitBanner({ unitId, width, height, isStickyBottom = fa
   const [isVisible, setIsVisible] = useState(true);
 
   // Set the default unit IDs based on whether this is a sticky bottom ad or regular ad
-  const defaultUnitId = isStickyBottom ? 'DAN-9f0CcoCd3v9jgrUT' : 'DAN-fPpKBjqcgAZAFFem';
+  const defaultUnitId = isStickyBottom ? 'DAN-0xOXtuX0kFhu9nSF' : 'DAN-0xOXtuX0kFhu9nSF';
   const activeUnitId = (!unitId || unitId === 'PLACEHOLDER') ? defaultUnitId : unitId;
   
   const activeWidth = isStickyBottom ? '320' : (activeUnitId === 'DAN-fPpKBjqcgAZAFFem' ? '250' : (width || '320'));
@@ -66,10 +66,10 @@ export default function AdFitBanner({ unitId, width, height, isStickyBottom = fa
             </button>
           </div>
 
-          <div ref={containerRef} className="flex justify-center items-center h-[50px] w-[320px] overflow-hidden bg-slate-50/50 rounded-lg">
+          <div ref={containerRef} className="flex justify-center items-center h-[50px] w-[320px] overflow-hidden bg-slate-50/50 rounded-none">
             <ins
               className="kakao_ad_area"
-              style={{ display: 'none' }}
+              style={{ display: 'none', borderRadius: '0px !important' }}
               data-ad-unit={activeUnitId}
               data-ad-width={activeWidth}
               data-ad-height={activeHeight}
@@ -88,7 +88,7 @@ export default function AdFitBanner({ unitId, width, height, isStickyBottom = fa
       <div ref={containerRef} className="flex justify-center items-center">
         <ins
           className="kakao_ad_area"
-          style={{ display: 'none' }}
+          style={{ display: 'none', borderRadius: '0px !important' }}
           data-ad-unit={activeUnitId}
           data-ad-width={activeWidth}
           data-ad-height={activeHeight}

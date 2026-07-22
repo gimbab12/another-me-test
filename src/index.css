@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* 카카오 애드핏 심사 보류 방지: 광고 모서리 둥글기(border-radius) 강제 0px 초기화 */
+ins.kakao_ad_area,
+ins.kakao_ad_area * {
+  border-radius: 0px !important;
+}
